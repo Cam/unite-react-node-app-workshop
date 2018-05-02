@@ -22,7 +22,7 @@ app.use(
   createShopifyAuth({
     apiKey: SHOPIFY_API_KEY,
     secret: SHOPIFY_SECRET,
-    scopes: ['write_orders, write_products'],
+    scopes: ['read_products, write_products'],
     afterAuth(ctx) {
       const {shop, accessToken} = ctx.session;
 

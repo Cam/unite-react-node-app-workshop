@@ -16,21 +16,82 @@ We'll be using git heavily in this workshop, and you'll especially need it if yo
 
 ### Expose your dev environment to the internet
 
-Download ngrok
-https://ngrok.com/download
-
-Open a tunnel
+You will need to download ngrok at https://ngrok.com/download and signup for a free account. Move the unziped ngrok client to your user folder and run the following in your terminal.
 
 ```bash
-$ ngrok http 3000
+$ ./ngrok http 3000
 ```
-Matt: Maybe add note about path to ngrok.
 
-Matt: Maybe add note about path to ngrok.
+This should display a UI in your terminal with the public URL of your tunnel and other status and metrics information about connections made over your tunnel. It should something like this:
+
+(TODO: Matt add image)
 
 ### Set up an App on the partners dashboard
 
-Create your app on the **Apps** page of the [partner dashboard](https://partners.shopify.com/organizations).
+Log into the [partner dashboard](https://partners.shopify.com/organizations) and click "Apps" from the main dashboard navigation. Then click "Create app".
+
+Give you app a name, this can be anything you'd like.
+
+Set the app Url to the public URL of you ngrok tunnel. This should be displayed in the UI under "Fowarding" and should end with `.ngrok.io` for example `http://e3fd01a0.ngrok.io`.
+
+Rename `.env.example` to `.env` and copy and paste your Shopify Api Key and Secret to this file. These can be found in under App credentials, near the bottom of the App Info page.
+
+```
+SHOPIFY_API_KEY=YOUR_SHOPIFY_API_KEY
+SHOPIFY_SECRET=YOUR_SHOPIFY_SECRET
+```
+
+## Starting the app
+
+Install the dependencies by running in the project root:
+`npm install`
+
+And finally run the app:
+`npm start`
+
+Open a browser and go to either [localhost:3000](localhost:3000) or the url provided by ngrok.
+
+If successful, you should see a hello message in your browser.
+
+If you ran into any issues with the above steps, please reach our to matt.seccafien@shopify.com before the workshop.
+
+Rename `.env.example` to `.env` and copy and paste your Shopify Api Key and Secret to this file.
+
+```
+SHOPIFY_API_KEY=YOUR_SHOPIFY_API_KEY
+SHOPIFY_SECRET=YOUR_SHOPIFY_SECRET
+```
+
+## Starting the app
+
+Install the dependencies by running in the project root:
+`npm install`
+
+And finally run the app:
+`npm start`
+
+Open a browser and go to either [localhost:3000](localhost:3000) or the url provided by ngrok. You should see a the following in your browser.
+
+(Add image of app in browser)
+
+Rename `.env.example` to `.env` and copy and paste your Shopify Api Key and Secret to this file.
+
+```
+SHOPIFY_API_KEY=YOUR_SHOPIFY_API_KEY
+SHOPIFY_SECRET=YOUR_SHOPIFY_SECRET
+```
+
+## Starting the app
+
+Install the dependencies by running in the project root:
+`npm install`
+
+And finally run the app:
+`npm start`
+
+Open a browser and go to either [localhost:3000](localhost:3000) or the url provided by ngrok. You should see a the following in your browser.
+
+(Add image of app in browser)
 
 Rename `.env.example` to `.env` and copy and paste your Shopify Api Key and Secret to this file.
 
