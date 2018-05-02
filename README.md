@@ -8,6 +8,9 @@ The following steps should be done before you start the workshop
 ### Install Node (and npm)
 Install the latest LTS version of node from [the official site](https://nodejs.org/en/download/). This will include the npm client we'll use to install dependencies.
 
+### Install git
+We'll be using git heavily in this workshop, and you'll especially need it if you fall behind.
+
 ### Expose your dev environment to the internet
 
 Download ngrok
