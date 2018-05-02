@@ -21,6 +21,13 @@ You will need to download ngrok at https://ngrok.com/download and signup for a f
 ```bash
 $ ./ngrok http 3000
 ```
+Matt: Maybe add note about path to ngrok.
+
+Matt: Maybe add note about path to ngrok.
+
+This should display a UI in your terminal with the public URL of your tunnel and other status and metrics information about connections made over your tunnel. It should something like this:
+
+(TODO: Matt add image)
 
 Matt: Maybe add note about path to ngrok.
 

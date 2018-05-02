@@ -74,7 +74,7 @@ app.use(async function(ctx, next) {
 });
 ```
 
-If you refresh the browser, you should see `Middleware 1` and `Middleware 2` printed in the console, but not `Middleware 3`.  That’s because Koa ends the request once the middleware Promise chain is resolved. That means the response was sent to the client before we got to our third middleware. We can solve this by changing our index function into an `async` function that has `await next()` like our other middleware does.
+If you refresh the browser, you should see `Middleware 1` and `Middleware 2` printed in the console, but not `Middleware 3`. That’s because Koa ends the request once the middleware Promise chain is resolved. That means the response was sent to the client before we got to our third middleware. We can solve this by changing our index function into an `async` function that has `await next()` like our other middleware does.
 
 We said Koa "pauses" the excecution of the function, so let's log some messages after our `next()` calls to get a better idea of what is meant by this.
 
@@ -140,18 +140,20 @@ Next we need to use the Shopify Auth Middleware. To configure it we'll need to p
 We also need to define our own `afterAuth` function. This tells our app what to do when an authentication successfully completes. We will just print a message and redirect to the root or our app.
 
 ```js
-app.use(createShopifyAuth({
-   apiKey: SHOPIFY_API_KEY,
-   secret: SHOPIFY_SECRET,
-   scope: ['read_products, write_products'],
-   afterAuth(ctx) {
-     const { shop, accessToken } = ctx.session;
+app.use(
+  createShopifyAuth({
+    apiKey: SHOPIFY_API_KEY,
+    secret: SHOPIFY_SECRET,
+    scope: ['read_products, write_products'],
+    afterAuth(ctx) {
+      const {shop, accessToken} = ctx.session;
 
-     console.log('We did it!', accessToken);
+      console.log('We did it!', accessToken);
 
-     ctx.redirect('/');
-   }
-}))
+      ctx.redirect('/');
+    },
+  }),
+);
 ```
 
 We can grab both our `SHOPIFY_SECRET` and `SHOPIFY_API_KEY` from the environment.
@@ -219,6 +221,7 @@ This middleware will look for a `webpack.config.js` in the project root and that
 Lastly, we need to add the entry point to our client-side bundle. Create a folder called 'client' and put an empty `index.js` in that folder.
 
 #### Step 5: Hello React (Matt)
+
 For this step we are going to need both `react` and `react-dom`. Let's start by installing those.
 
 ```bash
@@ -274,6 +277,7 @@ We need to tell our Koa app to use this middleware, so back in `server/index.js`
 You should now see "Hello React", which is great but we actually want to render our client side application here, not just a random string. To do this we need to start thinking in components.
 
 #### Step 6: Our first React Component (Matt)
+
 Lets start with out main App component. Create a new file inside of `/app` called `App.js`, this is where we will define our first component, a simple component that renders a title for our page.
 
 ```
@@ -323,6 +327,7 @@ export default (ctx) => {
 We now have the same component mounted on the server as well as the client. Nice!
 
 #### Step 7: Routing with react (Matt)
+
 You are most likely going to need some routes in your Shopify app, so let's do that here. We are going to use React Router 4. It lets us describe our routes declaratively using react components.
 
 Let’s install the libraries we need:
@@ -349,6 +354,7 @@ export default function({children}) {
  );
 };
 ```
+
 And because we are using server side rendering, we need to add the `StaticRouter` component from react-router to our `server/render-react-app.js` middleware.
 
 ```diff
@@ -385,8 +391,10 @@ So nothing much has changed… but let’s add another route to our Switch.
 Now if you navigate to `/settings` you should see the Setting heading on the page.
 
 #### Excercise
+
 Lets take a few minutes for a quick independent excercise.
-1. See if you can add a few routes to your own application, including a NotFound route and component.
+
+1.  See if you can add a few routes to your own application, including a NotFound route and component.
 
 Our App.js file is getting pretty large and eventually will get unmanageable. Let’s pull our pages into their own component files.
 
@@ -428,7 +436,8 @@ export default function() {
 You should now see the url change as you navigate to different areas of your embedded app.
 
 #### Step 9: Fetching some games (Mal)
-So we have a routes to build our app on, but we don’t have any interactivity yet. Let’s change that. 
+
+So we have a routes to build our app on, but we don’t have any interactivity yet. Let’s change that.
 
 First we’ll want to be able to list some games, so let’s create a new file called `GameList.js` inside our our app folder.
 
@@ -479,9 +488,9 @@ const API_URL = 'https://bgg-json.azurewebsites.net/hot';
 Next we are going intialize some state, which will later store the the results from our API call.
 
 ```js
- state = {
-   games: []
- }
+state = {
+  games: [],
+};
 ```
 
 Now let's actually fetch the board games on `ComponentDidMount`:
@@ -527,7 +536,7 @@ export default class Home extends React.Component {
 }
 ```
 
-We should see a big list of Board Games now, but there are some enhancements we can make. For example, we aren’t handling our loading or error states. It’s also a little unfortunate they we have to break out of our component model. In general at Shopify, we embrace the component model even for imperical tasks like fetching data. 
+We should see a big list of Board Games now, but there are some enhancements we can make. For example, we aren’t handling our loading or error states. It’s also a little unfortunate they we have to break out of our component model. In general at Shopify, we embrace the component model even for imperical tasks like fetching data.
 
 #### Step 10: Using the Fetch component
 
@@ -543,23 +552,23 @@ Import the Fetch component from this package.
 import Fetch from 'react-fetch-component';
 ```
 
-And now we can encapsulate all of our the imperitive logic in this component as well as check for errors and loading. This is done inside of a `renderProp`, a pattern whereby we pass a function into the of child of our component. This funciton is passed a single object with a boolean `loading` property that we can use to  check if the request is in process, an `error` property that is undefined unless there is an error in our request and finally the resulting data from our request.
+And now we can encapsulate all of our the imperitive logic in this component as well as check for errors and loading. This is done inside of a `renderProp`, a pattern whereby we pass a function into the of child of our component. This funciton is passed a single object with a boolean `loading` property that we can use to check if the request is in process, an `error` property that is undefined unless there is an error in our request and finally the resulting data from our request.
 
 We are going to destructure those and handle each property within our render function.
 
 ```js
-  <Fetch url={API_URL} as="json">
-   {({loading, error, data}) => {
-      if (loading) {
-        return <p>loading</p>;
-      }
-      if (error) {
-        return <p>failed to fetch games</p>;
-      }
+<Fetch url={API_URL} as="json">
+  {({loading, error, data}) => {
+    if (loading) {
+      return <p>loading</p>;
+    }
+    if (error) {
+      return <p>failed to fetch games</p>;
+    }
 
-      return <GameList games={data} />;
-    }}
-  </Fetch>
+    return <GameList games={data} />;
+  }}
+</Fetch>
 ```
 
 With this change we can go back to a Stateless React Component and our entire Home component should look like this:
@@ -596,6 +605,7 @@ export default function Home() {
 ```
 
 #### Step 11: Fetching Products with GraphQL (Matt)
+
 GraphQL is a query language and runtime that sits between the front-end client and backend data services. The GraphQL query language provides a common query syntax for data fetching and manipulations, while the GraphQL runtime is sent those queries, typically via http at a URL on a web service, to then validate, execute and finishes by provide a JSON response.
 
 The first thing we need to do is install Apollo. Apollo is a community that builds a number of tools for developers to work with GraphQL on both the server and the client. We are going to use their JavaScript client for React in order to work with our GraphQL API on the frontend. GraphQL clients exist to abstract the common tasks that are agnostic to your specific app, such as sending queries and mutations, low-level networking details and maintaining a local cache. Apollo is one such client that we currently use in Shopify/web, but there are others such as Facebook's Relay and Lokka.
@@ -625,14 +635,14 @@ Now on the client side, lets configure our apollo client, we are going to this a
 
 ```js
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import {ApolloProvider} from 'react-apollo';
 
 const client = new ApolloClient({
- ssrMode: isServer,
- uri: '/graphql',
- fetchOptions: {
-   credentials: 'include',
- },
+  ssrMode: isServer,
+  uri: '/graphql',
+  fetchOptions: {
+    credentials: 'include',
+  },
 });
 ```
 
@@ -680,8 +690,6 @@ Next we can use this query document in our `Home` component by passing it into t
 
 How this component renders is expressed using the same renderProp pattern we saw in our `Fetch` component, and it is also passed a single object with similar `loading`, `error` and `data` properties. The ends up making the child of our `Query` function look pretty similar to that of our `Fetch` component.
 
-
-
 ```js
 import {Query} from 'react-apollo';
 import {GET_GAMES} from './queries';
@@ -703,10 +711,11 @@ import {GET_GAMES} from './queries';
       return <ProductList products={products} />;
     }
   }}
-</Query>
+</Query>;
 ```
 
 #### Step 12: Creating Products with GraphQL (Matt)
+
 Adding a mutation operation is very similar to a query, but with some important differences. First, in `app/queries` lets add our mutation query:
 
 ```js
@@ -722,7 +731,7 @@ export const CREATE_PRODUCT = gql`
 `;
 ```
 
-We are going to use this mutation in the `GameItem` component, so over in `app/GameItem.js` lets import our query. 
+We are going to use this mutation in the `GameItem` component, so over in `app/GameItem.js` lets import our query.
 
 ```js
 import {CREATE_PRODUCT} from './queries';
@@ -737,7 +746,6 @@ import {Mutation} from './react-apollo';
 And instead of a `query` prop, this component accepts a `mutation` prop and we pass our `gql` wrapped query document into that prop. Lets start by adding this component to our render and return the same markup from our render prop.
 
 ```js
-
 export default function GameItem({game: {name}}) {
   return (
     <Mutation mutation={CREATE_PRODUCT}>
@@ -759,7 +767,6 @@ Now let's fill in our render function. The first argument to our render prop is 
 We want to call our mutation when our button is clicked, so we are going to add an `onClick` function that calls our mutation function and passes it the variables it expects.
 
 ```js
-
 export default function GameItem({game: {name}}) {
   return (
     <Mutation mutation={CREATE_PRODUCT}>
@@ -807,18 +814,7 @@ If we return to the browser and click the Create product button, our product lis
 This tells the Apollo client to refetch our `GET_GAMES` query after this mutation.
 
 ### Closing thoughts
+
 We covered a lot of different topics in this workshop, but hopefully this has given you a headstart on building web-apps using Shopify’s tools for the Node and React.
 
 #### Additional Resources
-
-
-
-
-
-
-
-
-
-
-
-
