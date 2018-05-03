@@ -24,6 +24,7 @@ Open a tunnel
 ```bash
 $ ngrok http 3000
 ```
+Matt: Maybe add note about path to ngrok.
 
 Matt: Maybe add note about path to ngrok.
 

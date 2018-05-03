@@ -6,6 +6,8 @@ _with React and Koa_
 
 Together we will be building a Shopify app that creates products from a list of board games fetched from [boardgamegeek.com](https://boardgamegeek.com/).
 
+Together we will be building a Shopify app that creates products from a list of board games fetched from [boardgamegeek.com](https://boardgamegeek.com/).
+
 ### Goals
 
 * Give attendees a running start building a modern web-app using Shopify’s tools for the Node and React ecosystems.
@@ -112,39 +114,7 @@ To solve this we need to login to our partners dashboard, go to our App Info and
 
 Now if you try to authenicate again, it take you to install the app in the Shopify admin. Once its installed you can verify it shows by going to to `YOUR_SHOPIFY_URL/admin/apps`.
 
-#### Step 3: Adding Verify Request
-
-We now have an authentication route, but users can still go straight to our index without logging in. The next step will be to protect our `Hello Koa` with a verification middleware.
-
-The `@shopify/koa-shopify-auth` package exports a middleware for this exact purpose.
-
-```
-import createShopifyAuth, {createVerifyRequest} from '@shopify/koa-shopify-auth';
-```
-
-Now we can add the following between our Auth and Hello World middlewares.
-
-```js
-app.use(createVerifyRequest());
-```
-
-#### Step 4: Adding Verify Request
-
-Before we can get started building the frontend of our application in earnest, we need to get our environment setup to bundle our react code together.
-
-We’ll use webpack 4 for this. Webpack is an open-source JavaScript module bundler. It consumes your client side code, traverses it’s dependencies, and generates static assets representing those modules.
-
-Again, first step is to install the packages we need. We need webpack and a the koa-webpack middleware.
-
-```bash
-npm install webpack koa-webpack
-```
-
-Import the `koa-webpack` middleware and add it to the very bottom of our middle ware chain, we add:
-
-```js
-app.use(webpack());
-```
+#### Step 4: React and webpack
 
 #### Step 5: Our first React component
 
