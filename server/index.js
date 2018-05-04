@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import Koa from 'koa';
 import session from 'koa-session';
+import webpack from 'koa-webpack';
 import createShopifyAuth, {
   createVerifyRequest,
 } from '@shopify/koa-shopify-auth';
@@ -30,6 +31,8 @@ app.use(
 );
 
 app.use(createVerifyRequest());
+
+app.use(webpack());
 
 app.use(function index(ctx) {
   ctx.body = 'Hello koa :)';
