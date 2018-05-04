@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 import Koa from 'koa';
 import session from 'koa-session';
-import createShopifyAuth from '@shopify/koa-shopify-auth';
+import createShopifyAuth, {
+  createVerifyRequest,
+} from '@shopify/koa-shopify-auth';
 
 dotenv.config();
 const {SHOPIFY_API_KEY, SHOPIFY_SECRET} = process.env;
@@ -26,6 +28,8 @@ app.use(
     },
   }),
 );
+
+app.use(createVerifyRequest());
 
 app.use(function index(ctx) {
   ctx.body = 'Hello koa :)';
