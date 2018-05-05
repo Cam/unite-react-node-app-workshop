@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-const title = 'My Shopify app';
+import App from '../app/App';
 
-ReactDOM.render(<div>{title}</div>, document.getElementById('app'));
+ReactDOM.render(<App>My cool app</App>, document.getElementById('app'));
