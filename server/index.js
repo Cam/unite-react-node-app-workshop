@@ -6,6 +6,8 @@ import createShopifyAuth, {
   createVerifyRequest,
 } from '@shopify/koa-shopify-auth';
 
+import renderReactApp from './render-react-app';
+
 dotenv.config();
 const {SHOPIFY_API_KEY, SHOPIFY_SECRET} = process.env;
 
@@ -34,8 +36,6 @@ app.use(createVerifyRequest());
 
 app.use(webpack());
 
-app.use(function index(ctx) {
-  ctx.body = 'Hello Unite :)';
-});
+app.use(renderReactApp);
 
 export default app;
