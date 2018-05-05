@@ -9,6 +9,8 @@ import graphQLProxy from '@shopify/koa-shopify-graphql-proxy';
 
 import renderReactApp from './render-react-app';
 
+import renderReactApp from './render-react-app';
+
 dotenv.config();
 const {SHOPIFY_API_KEY, SHOPIFY_SECRET} = process.env;
 
